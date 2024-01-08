@@ -20,6 +20,7 @@ class Dish {
 
     //Validación de parámetros obligatorios
     if (!name) throw new EmptyValueException("name");
+    if (typeof name !== "string") throw new InvalidValueException("name", name);
 
     //Definición de atributos privados del objeto
     this.#name = name;
@@ -34,6 +35,8 @@ class Dish {
       },
       set(value) {
         if (!value) throw new EmptyValueException("name");
+        if (typeof value !== "string")
+          throw new InvalidValueException("name", value);
         this.#name = value;
       },
     });
@@ -45,6 +48,8 @@ class Dish {
       },
       set(value) {
         if (!value) throw new EmptyValueException("description");
+        if (typeof value !== "string")
+          throw new InvalidValueException("description", value);
         this.#description = value;
       },
     });
@@ -55,6 +60,8 @@ class Dish {
       },
       set(value) {
         if (!value) throw new EmptyValueException("ingredients");
+        if (!Array.isArray(value))
+          throw new InvalidValueException("ingredients", value);
         this.#ingredients = value;
       },
     });
@@ -65,16 +72,18 @@ class Dish {
       },
       set(value) {
         if (!value) throw new EmptyValueException("image");
+        if (typeof value !== "string")
+          throw new InvalidValueException("image", value);
         this.#image = value;
       },
     });
   }
 
   toString() {
-    return `Name of Dish: ${this.name} \n
-            Description: ${this.description} \n
-            Ingredients: ${this.ingredients} \n
-            Image:: ${this.image}`;
+    return `Name of Dish: ${this.name}
+Description: ${this.description}
+Ingredients: ${this.ingredients}
+Image: ${this.image}`;
   }
 }
 
@@ -89,6 +98,7 @@ class Category {
 
     //Validación de parámetros obligatorios
     if (!name) throw new EmptyValueException("name");
+    if (typeof name !== "string") throw new InvalidValueException("name", name);
 
     //Definición de atributos privados del objeto
     this.#name = name;
@@ -101,6 +111,8 @@ class Category {
       },
       set(value) {
         if (!value) throw new EmptyValueException("name");
+        if (typeof value !== "string")
+          throw new InvalidValueException("name", value);
         this.#name = value;
       },
     });
@@ -111,14 +123,16 @@ class Category {
       },
       set(value) {
         if (!value) throw new EmptyValueException("description");
+        if (typeof value !== "string")
+          throw new InvalidValueException("description", value);
         this.#description = value;
       },
     });
   }
 
   toString() {
-    return `Name of Category: ${this.name} \n
-              Description: ${this.description}`;
+    return `Name of Category: ${this.name}
+Description: ${this.description}`;
   }
 }
 
@@ -133,6 +147,7 @@ class Allergen {
 
     //Validación de parámetros obligatorios
     if (!name) throw new EmptyValueException("name");
+    if (typeof name !== "string") throw new InvalidValueException("name", name);
 
     //Definición de atributos privados del objeto
     this.#name = name;
@@ -145,6 +160,8 @@ class Allergen {
       },
       set(value) {
         if (!value) throw new EmptyValueException("name");
+        if (typeof value !== "string")
+          throw new InvalidValueException("name", value);
         this.#name = value;
       },
     });
@@ -155,14 +172,16 @@ class Allergen {
       },
       set(value) {
         if (!value) throw new EmptyValueException("description");
+        if (typeof value !== "string")
+          throw new InvalidValueException("description", value);
         this.#description = value;
       },
     });
   }
 
   toString() {
-    return `Name of Allergen: ${this.name} \n
-                Description: ${this.description}`;
+    return `Name of Allergen: ${this.name} 
+Description: ${this.description}`;
   }
 }
 
@@ -177,6 +196,7 @@ class Menu {
 
     //Validación de parámetros obligatorios
     if (!name) throw new EmptyValueException("name");
+    if (typeof name !== "string") throw new InvalidValueException("name", name);
 
     //Definición de atributos privados del objeto
     this.#name = name;
@@ -189,6 +209,8 @@ class Menu {
       },
       set(value) {
         if (!value) throw new EmptyValueException("name");
+        if (typeof value !== "string")
+          throw new InvalidValueException("name", value);
         this.#name = value;
       },
     });
@@ -199,6 +221,8 @@ class Menu {
       },
       set(value) {
         if (!value) throw new EmptyValueException("description");
+        if (typeof value !== "string")
+          throw new InvalidValueException("description", value);
         this.#description = value;
       },
     });
@@ -222,6 +246,7 @@ class Restaurant {
 
     //Validación de parámetros obligatorios
     if (!name) throw new EmptyValueException("name");
+    if (typeof name !== "string") throw new InvalidValueException("name", name);
 
     //Definición de atributos privados del objeto
     this.#name = name;
@@ -235,6 +260,8 @@ class Restaurant {
       },
       set(value) {
         if (!value) throw new EmptyValueException("name");
+        if (typeof value !== "string")
+          throw new InvalidValueException("name", value);
         this.#name = value;
       },
     });
@@ -245,6 +272,8 @@ class Restaurant {
       },
       set(value) {
         if (!value) throw new EmptyValueException("description");
+        if (typeof value !== "string")
+          throw new InvalidValueException("descrition", value);
         this.#description = value;
       },
     });
@@ -280,10 +309,14 @@ class Coordinate {
 
     //Validación de parámetros obligatorios
     if (!latitude) throw new EmptyValueException("latitude");
+    if (typeof latitude !== "number")
+      throw new InvalidValueException("latitude", latitude);
     if (/^[-]?\d+(\.\d+)?$/.test(latitude))
       throw new InvalidValueException("latitude", latidute);
 
     if (!longitude) throw new EmptyValueException("longitude");
+    if (typeof longitude !== "number")
+      throw new InvalidValueException("longitude", longitude);
     if (/^[-]?\d+(\.\d+)?$/.test(longitude))
       throw new InvalidValueException("longitude", longitude);
 
@@ -298,6 +331,8 @@ class Coordinate {
       },
       set(value) {
         if (!value) throw new EmptyValueException("latitude");
+        if (typeof value !== "number")
+          throw new InvalidValueException("latitude", latitude);
         if (/^[-]?\d+(\.\d+)?$/.test(value))
           throw new InvalidValueException("latitude", value);
         this.#latitude = value;
@@ -310,6 +345,8 @@ class Coordinate {
       },
       set(value) {
         if (!value) throw new EmptyValueException("longitude");
+        if (typeof value !== "number")
+          throw new InvalidValueException("latitude", value);
         if (/^[-]?\d+(\.\d+)?$/.test(value))
           throw new InvalidValueException("longitude", value);
         this.#longitude = value;
@@ -318,7 +355,7 @@ class Coordinate {
   }
 
   toString() {
-    return `Latitude: ${this.#latitude} \n
-                  Longitude: ${this.#longitude}`;
+    return `Latitude: ${this.latitude} \n
+                  Longitude: ${this.longitude}`;
   }
 }
