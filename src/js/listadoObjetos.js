@@ -229,8 +229,8 @@ class Menu {
   }
 
   toString() {
-    return `Name of Menu: ${this.name} \n
-                Description: ${this.description}`;
+    return `Name of Menu: ${this.name}
+Description: ${this.description}`;
   }
 }
 
@@ -292,9 +292,9 @@ class Restaurant {
   }
 
   toString() {
-    return `Name of Restaurant: ${this.name} \n
-                Description: ${this.description} \n
-                Location: ${this.location}`;
+    return `Name of Restaurant: ${this.name}
+Description: ${this.description}
+Location: ${this.location}`;
   }
 }
 
@@ -309,20 +309,22 @@ class Coordinate {
 
     //Validación de parámetros obligatorios
     if (!latitude) throw new EmptyValueException("latitude");
-    if (typeof latitude !== "number")
+    if (typeof latitude !== "string")
       throw new InvalidValueException("latitude", latitude);
-    if (/^[-]?\d+(\.\d+)?$/.test(latitude))
-      throw new InvalidValueException("latitude", latidute);
+    if (/^[-]?\d+(\,\d+)?$/.test(latitude))
+      //---------------------------------HAY QUE PONER , PORQUE SINO NO COGE EL PUNTO EN EL STRING
+      throw new InvalidValueException("latitude", latitude);
 
     if (!longitude) throw new EmptyValueException("longitude");
-    if (typeof longitude !== "number")
+    if (typeof longitude !== "string")
       throw new InvalidValueException("longitude", longitude);
-    if (/^[-]?\d+(\.\d+)?$/.test(longitude))
+    if (/^[-]?\d+(\,\d+)?$/.test(longitude))
+      //--------------------------------HAY QUE PONER , PORQUE SINO NO COGE EL PUNTO EN EL STRING
       throw new InvalidValueException("longitude", longitude);
 
     //Definición de atributos privados del objeto
-    this.#latitude = latitude;
-    this.#longitude = longitude;
+    this.#latitude = Number.parseFloat(latitude);
+    this.#longitude = Number.parseFloat(longitude);
 
     Object.defineProperty(this, "latitude", {
       enumerable: true,
@@ -331,11 +333,11 @@ class Coordinate {
       },
       set(value) {
         if (!value) throw new EmptyValueException("latitude");
-        if (typeof value !== "number")
-          throw new InvalidValueException("latitude", latitude);
-        if (/^[-]?\d+(\.\d+)?$/.test(value))
+        if (typeof value !== "string")
           throw new InvalidValueException("latitude", value);
-        this.#latitude = value;
+        if (/^[-]?\d+(\,\d+)?$/.test(value))
+          throw new InvalidValueException("latitude", value);
+        this.#latitude = Number.parseFloat(value);
       },
     });
     Object.defineProperty(this, "longitude", {
@@ -345,17 +347,16 @@ class Coordinate {
       },
       set(value) {
         if (!value) throw new EmptyValueException("longitude");
-        if (typeof value !== "number")
-          throw new InvalidValueException("latitude", value);
-        if (/^[-]?\d+(\.\d+)?$/.test(value))
+        if (typeof value !== "string")
           throw new InvalidValueException("longitude", value);
-        this.#longitude = value;
+        if (/^[-]?\d+(\,\d+)?$/.test(value))
+          throw new InvalidValueException("longitude", value);
+        this.#longitude = Number.parseFloat(value);
       },
     });
   }
 
   toString() {
-    return `Latitude: ${this.latitude} \n
-                  Longitude: ${this.longitude}`;
+    return `Latitude: ${this.latitude}, Longitude: ${this.longitude}`;
   }
 }

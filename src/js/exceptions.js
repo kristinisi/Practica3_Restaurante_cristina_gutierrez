@@ -1,5 +1,5 @@
 class BaseException extends Error {
-  constructor(mesage = "", fileName, lineNumber) {
+  constructor(message = "", fileName, lineNumber) {
     super(message, fileName, lineNumber);
     this.name = "BaseException";
     if (Error.captureStackTrace) {
