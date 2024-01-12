@@ -45,16 +45,16 @@ class AllergenException extends RestaurantsManagerException {
   }
 }
 
-// class RestaurantException extends RestaurantsManagerException {
-//   constructor(fileName, lineNumber) {
-//     super(
-//       "Error: The method needs a Restaurant parameter.",
-//       fileName,
-//       lineNumber
-//     );
-//     this.name = "RestaurantException";
-//   }
-// }
+class RestaurantException extends RestaurantsManagerException {
+  constructor(fileName, lineNumber) {
+    super(
+      "Error: The method needs a Restaurant parameter.",
+      fileName,
+      lineNumber
+    );
+    this.name = "RestaurantException";
+  }
+}
 
 // class CoordinateException extends RestaurantsManagerException {
 //   constructor(fileName, lineNumber) {
@@ -130,6 +130,23 @@ class DishNotExistsInTheListException extends RestaurantsManagerException {
     this.name = "DishNotExistsInTheListException";
   }
 }
+class RestaurantInTheListException extends RestaurantsManagerException {
+  constructor(fileName, lineNumber) {
+    super("Error: Restaurant is already in the list.", fileName, lineNumber);
+    this.name = "RestaurantInTheListException";
+  }
+}
+
+class RestaurantNotExistsInTheListException extends RestaurantsManagerException {
+  constructor(fileName, lineNumber) {
+    super(
+      "Error: The restaurant doesn't exist in the list.",
+      fileName,
+      lineNumber
+    );
+    this.name = "RestaurantNotExistsInTheListException";
+  }
+}
 
 //Patrón Singleton
 let RestaurantsManager = (function () {
@@ -167,7 +184,14 @@ let RestaurantsManager = (function () {
 
     //Dado un plato, devuelve la posición de esa plato o -1 so no lo encontramos
     #getDishPosition(obj) {
-      return this.#dishes.findIndex((busqueda) => busqueda.dish === obj.dish);
+      return this.#dishes.findIndex((busqueda) => busqueda.name === obj.name);
+    }
+
+    //Dado un restaurante, devuelve la posición de ese restaurante o -1 so no lo encontramos
+    #getRestaurantPosition(obj) {
+      return this.#restaurants.findIndex(
+        (busqueda) => busqueda.restaurant === obj.restaurant
+      );
     }
 
     constructor() {
@@ -202,7 +226,7 @@ let RestaurantsManager = (function () {
       return {
         *[Symbol.iterator]() {
           for (const category of categories) {
-            yield category.category;
+            yield category;
           }
         },
       };
@@ -214,7 +238,7 @@ let RestaurantsManager = (function () {
       return {
         *[Symbol.iterator]() {
           for (const menu of menuIte) {
-            yield menu.menu;
+            yield menu;
           }
         },
       };
@@ -226,7 +250,7 @@ let RestaurantsManager = (function () {
       return {
         *[Symbol.iterator]() {
           for (const allergen of allergens) {
-            yield allergen.allerge;
+            yield allergen;
           }
         },
       };
@@ -238,9 +262,7 @@ let RestaurantsManager = (function () {
       return {
         *[Symbol.iterator]() {
           for (const r of rest) {
-            if (rest.hasOwnProperty(r)) {
-              yield r;
-            }
+            yield r;
           }
         },
       };
@@ -363,32 +385,186 @@ let RestaurantsManager = (function () {
         if (di === null) {
           throw new EmptyValueException();
         }
-        let obj = { dish: di };
-        if (this.#getDishPosition(obj) !== -1) {
+
+        if (this.#getDishPosition(di) !== -1) {
           throw new DishInTheListException();
         } else {
-          this.#dishes.push(obj);
-          console.log("Successfully added");
+          this.#dishes.push(di);
+          console.log("Successfully added in the list dishes");
         }
       }
     }
 
     //Elimina un plato y todas sus asignaciones a categorias, alergenos y menus
-    // removeAllergen(...allergens) {
-    //   for (const aller of allergens) {
-    //     if (!(aller instanceof Allergen)) {
-    //       throw new AllergenException();
-    //     }
-    //     let obj = { allerge: aller, dishes: [] };
-    //     let position = this.#getAllergenPosition(obj);
-    //     if (position !== -1) {
-    //       this.#allergenType.splice(position, 1);
-    //       console.log("Succesfully removed");
-    //     } else {
-    //       throw new AllergenNotExistsInTheListException();
-    //     }
-    //   }
-    // }
+    removeDish(...dishes) {
+      for (const di of dishes) {
+        if (!(di instanceof Dish)) {
+          throw new DishException();
+        }
+        //primero, buscamos si el plato existe en el array dishes y si lo encuentra lo eliminamos
+        let position = this.#getDishPosition(di);
+        if (position !== -1) {
+          this.#dishes.splice(position, 1);
+          console.log("Succesfully removed in the list of dishes");
+
+          //segundo, buscamos si el plato está en alguna de las categorias(ya que puede estar en varias) y si los encuentra los borra
+          for (const objCat of this.#dishesCategory) {
+            let categoryPosition = this.#getCategoryPosition(objCat);
+            let objCategory = this.#dishesCategory[categoryPosition];
+            let dishIndex = objCategory.dishes.findIndex(
+              (busqueda) => busqueda.name === di.name
+            );
+            if (dishIndex !== -1) {
+              this.#dishesCategory[categoryPosition].dishes.splice(
+                dishIndex,
+                1
+              );
+            }
+          }
+
+          //tercero, buscamos si el plato está en algún alérgeno
+          for (const objAller of this.#allergenType) {
+            let allergenPosition = this.#getAllergenPosition(objAller);
+            let objAll = this.#allergenType[allergenPosition];
+            let dishIndex = objAll.dishes.findIndex(
+              (busqueda) => busqueda.name === di.name
+            );
+            if (dishIndex !== -1) {
+              this.#allergenType[AllergenPosition].dishes.splice(dishIndex, 1);
+            }
+          }
+
+          //cuarto, buscamos si el plato está en algún menu
+          for (const objMenu of this.#menus) {
+            let menuPosition = this.#getMenuPosition(objMenu);
+            let objM = this.#menus[menuPosition];
+            let dishIndex = objM.dishes.findIndex(
+              (busqueda) => busqueda.name === di.name
+            );
+            if (dishIndex !== -1) {
+              this.#menus[menuPosition].dishes.splice(dishIndex, 1);
+            }
+          }
+        } else {
+          throw new DishNotExistsInTheListException();
+        }
+      }
+    }
+
+    //Añade un nuevo restaurante
+    addRestaurant(...restaurants) {
+      for (const rest of restaurants) {
+        if (!(rest instanceof Restaurant)) {
+          throw new RestaurantException();
+        }
+        if (rest === null) {
+          throw new EmptyValueException();
+        }
+        let obj = { restaurant: rest };
+        if (this.#getRestaurantPosition(obj) !== -1) {
+          throw new RestaurantInTheListException();
+        } else {
+          this.#restaurants.push(obj);
+          console.log("Successfully added");
+        }
+      }
+    }
+
+    //Elimina un restaurante
+    removeRestaurant(...restaurants) {
+      for (const rest of restaurants) {
+        if (!(rest instanceof Restaurant)) {
+          throw new RestaurantException();
+        }
+        let obj = { restaurant: rest };
+        let position = this.#getRestaurantPosition(obj);
+        if (position !== -1) {
+          this.#restaurants.splice(position, 1);
+          console.log("Succesfully removed");
+        } else {
+          throw new RestaurantNotExistsInTheListException();
+        }
+      }
+    }
+
+    //Asigna un plato a una categoría. Si el objeto category o dish no existen se añaden al sistema
+    assignCategoryToDish(cat, ...dishes) {
+      //primero nos aseguramos que introducimos un tipo de categoria
+      if (!(cat instanceof Category)) {
+        throw new CategoryException();
+      }
+      if (cat === null) {
+        throw new EmptyValueException();
+      }
+
+      //segundo tenemos que encontrar la categoria
+      let obj = { category: cat };
+      let categoryPosition = this.#getCategoryPosition(obj);
+      if (categoryPosition !== -1) {
+        //Buscar la posición del plato en la categoria
+        //vamos pasando por cada plato
+        for (let di of dishes) {
+          if (!(di instanceof Dish)) {
+            throw new DishException();
+          }
+          if (di === null) {
+            throw new EmptyValueException();
+          }
+
+          //comprobamos si el plato existe en nuestra colección de platos, y si no existe lo añadimos
+          if (this.#getDishPosition(di) === -1) {
+            this.addDish(di);
+          }
+
+          let objCategory = this.#dishesCategory[categoryPosition];
+          let dishIndex = objCategory.dishes.findIndex(
+            (busqueda) => busqueda.name === di.name
+          );
+          if (dishIndex !== -1) {
+            throw new DishInTheListException();
+          } else {
+            this.#dishesCategory[categoryPosition].dishes.push(di);
+          }
+        }
+      }
+    }
+
+    //Desasigna un plato de una categoria
+    deassignCategoryToDish(cat, ...dishes) {
+      //primero nos aseguramos que introducimos un tipo de categoria
+      if (!(cat instanceof Category)) {
+        throw new CategoryException();
+      }
+      if (cat === null) {
+        throw new EmptyValueException();
+      }
+
+      //segundo tenemos que encontrar la categoria
+      let obj = { category: cat };
+      let categoryPosition = this.#getCategoryPosition(obj);
+      if (categoryPosition !== -1) {
+        //Buscar la posición del plato en la categoria
+        //vamos pasando por cada plato
+        for (let di of dishes) {
+          if (!(di instanceof Dish)) {
+            throw new DishException();
+          }
+          if (di === null) {
+            throw new EmptyValueException();
+          }
+
+          let objCategory = this.#dishesCategory[categoryPosition];
+          let dishIndex = objCategory.dishes.findIndex(
+            (busqueda) => busqueda.name === di.name
+          );
+          if (dishIndex === -1) {
+            throw new DishNotExistsInTheListException();
+          } else {
+            this.#dishesCategory[categoryPosition].dishes.splice(dishIndex, 1);
+          }
+        }
+      }
+    }
   }
 
   //Inicialización del Singleton
@@ -399,7 +575,7 @@ let RestaurantsManager = (function () {
   }
   return {
     //Devuelve un objeto con el método getInstance
-    getInstace: function () {
+    getInstance: function () {
       //Si la variable instanciated es undefined, primera ejecución, ejecuta init.
       if (!instanciated) {
         //instanciated contiene el objeto único

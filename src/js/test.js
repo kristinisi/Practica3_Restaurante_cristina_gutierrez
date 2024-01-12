@@ -1,3 +1,101 @@
+//Probando la creación de los objetos independientes
+console.log("Probando la creación de objetos independientes:");
+
+//Probamos con el objeto Dish
+let pizza = new Dish("Pizza");
+console.log(pizza.toString());
+pizza.description = "Pizza without pineapple, that is not pizza";
+pizza.ingredients = ["tomato", "chesse", "jam", "mushrooms"];
+pizza.image = "image";
+console.log(pizza.toString());
+let hamburger = new Dish("Hamburger");
+hamburger.description = "The best hamburger that you eat in your life.";
+hamburger.ingredients = [
+  "bread",
+  "meat of beef",
+  "letuce",
+  "tomato",
+  "bacon",
+  "onion",
+  "bbq sauce",
+];
+hamburger.image = "image";
+
+//provocamos algunos fallos
+// let dish02 = new Dish();
+// pizza.description = "";
+// pizza.ingredients = "sjdlaj";
+// console.log(pizza.ingredients);
+
+//Probamos con el objeto Category
+let vegetarian = new Category("Vegetarian");
+console.log(vegetarian.toString());
+vegetarian.description = "This category is for vegetarian people";
+console.log(vegetarian.toString());
+let normalCategory = new Category("Normal Category");
+normalCategory.description =
+  "This is a normal category for people who do not have any type of allergen";
+
+//generamos algunos fallos
+// let normalCategory = new Category();
+// vegetarian.description = 236;
+
+//Probamos con el objeto Allergen
+let egg = new Allergen("Egg");
+console.log(egg.toString());
+egg.description = "Person who cannot eat egg";
+console.log(egg.toString());
+let soya = new Allergen("Soya");
+egg.description = "Person who cannor ear soya";
+
+//generamos algunos fallos
+// let soya = new Allergen();
+// egg.description = 236;
+// egg.name = 236;
+
+//Probamos con el objeto Menu
+let saturdayMenu = new Menu("Saturday Menu");
+console.log(saturdayMenu.toString());
+saturdayMenu.description =
+  "Complete Menu with entrant, main dish, second dish, dessert and a drink.";
+console.log(saturdayMenu.description);
+let dailymenu = new Menu("Daily Menu");
+dailymenu.description =
+  "Daily Menu with main dish, second dish, dessert and drink for a better price.";
+
+//generamos algunos fallos
+// let dailymenu = new Menu();
+// saturdayMenu.description = [];
+
+//Probamos con el objeto Coordinate
+let coordinate01 = new Coordinate("123.45", "-56.456");
+console.log(coordinate01.toString());
+let coordinate02 = new Coordinate("-43.5", "-34.26");
+
+//generamos algunos fallos
+// let coordinate02 = new Coordinate(123.2, -42.36);
+// let coordinate03 = new Coordinate();
+
+//Probamos con el objeto restaurant
+let restaurant01 = new Restaurant("Blue");
+console.log(restaurant01.toString());
+restaurant01.description = "Restaurant in the city center of London.";
+restaurant01.location = coordinate01;
+console.log(restaurant01.toString());
+let restaurant02 = new Restaurant("Jone's Restaurant");
+restaurant02.description = "The best restaurant in Cambridge.";
+restaurant02.location = coordinate02;
+
+//generamos algunos fallos
+// let restaurant02 = new Restaurant();
+// restaurant01.description = 1236;
+// restaurant01.location = 110.3, 1523.6;
+
+//Probando RestaurantManager
+console.log("---------------Probando RestaurantManager---------------");
+
+let manager = RestaurantsManager.getInstance();
+
 //metemos en una función el for of para recorrer las categorías y que nos las muestre
 //eso nos evita ir repitiendo el mismo código
 function showCategories() {
@@ -18,130 +116,77 @@ function showAllergens() {
     console.log(allergen);
   }
 }
+function showRestaurants() {
+  console.log("List of restaurants");
+  for (const restaurant of manager.restaurants) {
+    console.log(restaurant);
+  }
+}
 
-//Probando la creación de los objetos independientes
-console.log("Probando la creación de objetos independientes:");
-
-//Probamos con el objeto Dish
-let dish01 = new Dish("Pizza");
-console.log(dish01.toString());
-dish01.description = "Pizza without pineapple, that is not pizza";
-dish01.ingredients = ["tomato", "chesse", "jam", "mushrooms"];
-dish01.image = "image";
-console.log(dish01.toString());
-let dish02 = new Dish("Hamburger");
-dish02.description = "The best hamburger that you eat in your life.";
-dish02.ingredients = [
-  "bread",
-  "meat of beef",
-  "letuce",
-  "tomato",
-  "bacon",
-  "onion",
-  "bbq sauce",
-];
-dish02.image = "image";
-
-//provocamos algunos fallos
-// let dish02 = new Dish();
-// dish01.description = "";
-// dish01.ingredients = "sjdlaj";
-// console.log(dish01.ingredients);
-
-//Probamos con el objeto Category
-let category01 = new Category("Vegetarian");
-console.log(category01.toString());
-category01.description = "This category is for vegetarian people";
-console.log(category01.toString());
-let category02 = new Category("Normal Category");
-category02.description =
-  "This is a normal category for people who do not have any type of allergen";
-
-//generamos algunos fallos
-// let category02 = new Category();
-// category01.description = 236;
-
-//Probamos con el objeto Allergen
-let allergen01 = new Allergen("Egg");
-console.log(allergen01.toString());
-allergen01.description = "Person who cannot eat egg";
-console.log(allergen01.toString());
-let allergen02 = new Allergen("Soya");
-allergen01.description = "Person who cannor ear soya";
-
-//generamos algunos fallos
-// let allergen02 = new Allergen();
-// allergen01.description = 236;
-// allergen01.name = 236;
-
-//Probamos con el objeto Menu
-let menu01 = new Menu("Saturday Menu");
-console.log(menu01.toString());
-menu01.description =
-  "Complete Menu with entrant, main dish, second dish, dessert and a drink.";
-console.log(menu01.description);
-let menu02 = new Menu("Daily Menu");
-menu02.description =
-  "Daily Menu with main dish, second dish, dessert and drink for a better price.";
-
-//generamos algunos fallos
-// let menu02 = new Menu();
-// menu01.description = [];
-
-//Probamos con el objeto Coordinate
-let coordinate01 = new Coordinate("123.45", "-56.456");
-console.log(coordinate01.toString());
-
-//generamos algunos fallos
-// let coordinate02 = new Coordinate(123.2, -42.36);
-// let coordinate03 = new Coordinate();
-
-//Probamos con el objeto restaurant
-let restaurant01 = new Restaurant("Blue");
-console.log(restaurant01.toString());
-restaurant01.description = "Restaurant in the city center of London.";
-restaurant01.location = coordinate01;
-console.log(restaurant01.toString());
-
-//generamos algunos fallos
-// let restaurant02 = new Restaurant();
-// restaurant01.description = 1236;
-// restaurant01.location = 110.3, 1523.6;
-
-//Probando RestaurantManager
-console.log("---------------Probando RestaurantManager---------------");
-
-let manager = RestaurantsManager.getInstace();
-manager.addCategory(category01);
-manager.addCategory(category02);
-// manager.addCategory(category01); //probamos a añadir de nuevo la misma categoría
+manager.addCategory(vegetarian);
+manager.addCategory(normalCategory);
+// manager.addCategory(vegetarian); //probamos a añadir de nuevo la misma categoría
 // mostramos las categorias de manager
 showCategories();
-manager.removeCategory(category01);
-// manager.removeCategory(category01); //probamos a eliminar la misma categoría
+// manager.removeCategory(vegetarian);
+// manager.removeCategory(vegetarian); //probamos a eliminar la misma categoría
 // manager.removeCategory("hola que tal"); //probamos a eliminar algo que no sea una categoria
 // manager.removeCategory(restaurant01);
 // mostramos las categorias de manager.
 showCategories();
 
-manager.addMenu(menu01, menu02);
+manager.addMenu(saturdayMenu, dailymenu);
 // manager.addMenu(menu01); //probamos que no se pueda introducir un mismo menú
 showMenus();
-manager.removeMenu(menu01);
+manager.removeMenu(saturdayMenu);
 // manager.removeMenu(menu01); //probamos a eliminar el mismo menu
-// manager.removeMenu(category01); //probamos a eliminar algo que no sea un menu
+// manager.removeMenu(vegetarian); //probamos a eliminar algo que no sea un menu
 showMenus();
 
-manager.addAllergen(allergen01, allergen02);
-// manager.addAllergen(allergen01); //probamos que no se pueda introducir un mismo menú
-// manager.addAllergen(menu01); //pronamos que solo se pueda introducir un alergeno
+manager.addAllergen(egg, soya);
+// manager.addAllergen(egg); //probamos que no se pueda introducir un mismo menú
+// manager.addAllergen(saturdayMenu); //pronamos que solo se pueda introducir un alergeno
 showAllergens();
-manager.removeAllergen(allergen01);
-// manager.removeAllergen(allergen01); //probamos a eliminar el mismo alergeno
-// manager.removeAllergen(menu01); //probamo a eliminar un tipo que no sea Allergen
+manager.removeAllergen(egg);
+// manager.removeAllergen(egg); //probamos a eliminar el mismo alergeno
+// manager.removeAllergen(saturdayMenu); //probamo a eliminar un tipo que no sea Allergen
 showAllergens();
 
-manager.addDish(dish01, dish02);
+manager.addDish(pizza);
 console.log(manager.dishes);
-// manager.addDish(menu01); //probamos a introducir un dato que no sea un plato
-// manager.addDish(dish01); //probamos a introducir un plato ya existente
+// manager.addDish(saturdayMenu); //probamos a introducir un dato que no sea un plato
+// manager.addDish(pizza); //probamos a introducir un plato ya existente
+// manager.removeDish(pizza);
+// manager.removeDish(pizza);//probamos a eliminar el mismo plato
+// manager.removeDish(saturdayMenu); //probamos a eliminar un tipo que no sea plato
+console.log(manager.dishes);
+
+manager.addRestaurant(restaurant01, restaurant02);
+// manager.addRestaurant(restaurant01); //añadimos de nuevo el mismo restaurante
+// manager.addRestaurant("lkasjd"); //añadimos un tipo que no es Restaurant
+showRestaurants();
+manager.removeRestaurant(restaurant01);
+// manager.removeRestaurant(restaurant01); //eliminamos el mismo restaurante
+// manager.removeRestaurant("laksjd"); //eliminamos un tipo que no es Restaurant
+showRestaurants();
+
+console.log("---añadidos---");
+//probamos a añadir un plato a la categoria
+showCategories();
+console.log(manager.dishes);
+manager.assignCategoryToDish(normalCategory, pizza, hamburger);
+showCategories();
+console.log(manager.dishes);
+
+let fish = new Dish("Fish");
+console.log("añadimos el plato fish");
+manager.assignCategoryToDish(vegetarian, fish);
+showCategories();
+console.log(manager.dishes);
+
+console.log("-----eliminacion de platos-----");
+//desasignar plato a la categoria
+// manager.deassignCategoryToDish(normalCategory, hamburger);
+manager.removeDish(hamburger);
+showCategories();
+console.log(manager.dishes);
