@@ -526,6 +526,12 @@ let RestaurantsManager = (function () {
             this.#dishesCategory[categoryPosition].dishes.push(di);
           }
         }
+      } else {
+        //si la categoría no existe se crea
+        this.addCategory(cat);
+        //como ya vamos a tener esa categoría, para no repetir el código volvemos a llamar al método
+        //para que añada los plato ya que hemos creado la caegoría
+        this.assignCategoryToDish(cat, ...dishes);
       }
     }
 
@@ -565,6 +571,228 @@ let RestaurantsManager = (function () {
         }
       }
     }
+
+    //Asigna un plato a un alérgeno. Si algún plato no existe se añade al sistema.
+    assignAllergenToDish(aller, ...dishes) {
+      //primero nos aseguramos que introducimos un tipo de alergeno
+      if (!(aller instanceof Allergen)) {
+        throw new AllergenException();
+      }
+      if (aller === null) {
+        throw new EmptyValueException();
+      }
+
+      //segundo tenemos que encontrar el alérgeno
+      let obj = { allerge: aller };
+      let allergenPosition = this.#getAllergenPosition(obj);
+      if (allergenPosition !== -1) {
+        //Buscar la posición del plato en el alergeno
+        //vamos pasando por cada plato
+        for (let di of dishes) {
+          if (!(di instanceof Dish)) {
+            throw new DishException();
+          }
+          if (di === null) {
+            throw new EmptyValueException();
+          }
+
+          //comprobamos si el plato existe en nuestra colección de platos, y si no existe lo añadimos
+          if (this.#getDishPosition(di) === -1) {
+            this.addDish(di);
+          }
+
+          let objAllergen = this.#allergenType[allergenPosition];
+          let dishIndex = objAllergen.dishes.findIndex(
+            (busqueda) => busqueda.name === di.name
+          );
+          if (dishIndex !== -1) {
+            throw new DishInTheListException();
+          } else {
+            this.#allergenType[allergenPosition].dishes.push(di);
+          }
+        }
+      } else {
+        //si el alérgeno no existe se crea
+        this.addAllergen(aller);
+        //llamamos al propio método para añadir los platos
+        this.assignAllergenToDish(aller, ...dishes);
+      }
+    }
+
+    //Desasigna un plato de un alérgeno
+    deassignAllergenToDish(aller, ...dishes) {
+      //primero nos aseguramos que introducimos un tipo de alérgeno
+      if (!(aller instanceof Allergen)) {
+        throw new AllergenException();
+      }
+      if (aller === null) {
+        throw new EmptyValueException();
+      }
+
+      //segundo tenemos que encontrar el alérgeno
+      let obj = { allerge: aller };
+      let allergePosition = this.#getAllergenPosition(obj);
+      if (allergePosition !== -1) {
+        //Buscar la posición del plato en el alérgeno
+        //vamos pasando por cada plato
+        for (let di of dishes) {
+          if (!(di instanceof Dish)) {
+            throw new DishException();
+          }
+          if (di === null) {
+            throw new EmptyValueException();
+          }
+
+          let objAllerge = this.#allergenType[allergePosition];
+          let dishIndex = objAllerge.dishes.findIndex(
+            (busqueda) => busqueda.name === di.name
+          );
+          if (dishIndex === -1) {
+            throw new DishNotExistsInTheListException();
+          } else {
+            this.#allergenType[allergePosition].dishes.splice(dishIndex, 1);
+          }
+        }
+      }
+    }
+
+    //Asigna un plato a un alérgeno. Si algún plato no existe se añade al sistema.
+    assignDishToMenu(menu, ...dishes) {
+      //primero nos aseguramos que introducimos un tipo de menu
+      if (!(menu instanceof Menu)) {
+        throw new MenuException();
+      }
+      if (menu === null) {
+        throw new EmptyValueException();
+      }
+
+      //segundo tenemos que encontrar el menu
+      let obj = { menu: menu };
+      let menuPosition = this.#getMenuPosition(obj);
+      if (menuPosition !== -1) {
+        //Buscar la posición del plato en el alergeno
+        //vamos pasando por cada plato
+        for (let di of dishes) {
+          if (!(di instanceof Dish)) {
+            throw new DishException();
+          }
+          if (di === null) {
+            throw new EmptyValueException();
+          }
+
+          //comprobamos si el plato existe en nuestra colección de platos, y si no existe lo añadimos
+          if (this.#getDishPosition(di) === -1) {
+            this.addDish(di);
+          }
+
+          let objMenu = this.#menus[menuPosition];
+          let dishIndex = objMenu.dishes.findIndex(
+            (busqueda) => busqueda.name === di.name
+          );
+          if (dishIndex !== -1) {
+            throw new DishInTheListException();
+          } else {
+            this.#menus[menuPosition].dishes.push(di);
+          }
+        }
+      } else {
+        //si el menu no existe se crea
+        this.addMenu(menu);
+        //llamamos al propio método para añadir los platos
+        this.assignDishToMenu(menu, ...dishes);
+      }
+    }
+
+    //Desasigna un plato de un menú
+    deassignDishToMenu(menu, ...dishes) {
+      //primero nos aseguramos que introducimos un tipo de menu
+      if (!(menu instanceof Menu)) {
+        throw new MenuException();
+      }
+      if (menu === null) {
+        throw new EmptyValueException();
+      }
+
+      //segundo tenemos que encontrar el menu
+      let obj = { menu: menu };
+      let menuPosition = this.#getMenuPosition(obj);
+      if (menuPosition !== -1) {
+        //Buscar la posición del plato en el menu
+        //vamos pasando por cada plato
+        for (let di of dishes) {
+          if (!(di instanceof Dish)) {
+            throw new DishException();
+          }
+          if (di === null) {
+            throw new EmptyValueException();
+          }
+
+          let objMenu = this.#menus[menuPosition];
+          let dishIndex = objMenu.dishes.findIndex(
+            (busqueda) => busqueda.name === di.name
+          );
+          if (dishIndex === -1) {
+            throw new DishNotExistsInTheListException();
+          } else {
+            this.#menus[menuPosition].dishes.splice(dishIndex, 1);
+          }
+        }
+      }
+    }
+
+    //Intercambia las posiciones de dos platos en un menu
+    changeDishesPositionsInMenu(menu, dish1, dish2) {
+      //primero nos aseguramos que introducimos un tipo de menu
+      if (!(menu instanceof Menu)) {
+        throw new MenuException();
+      }
+      if (menu === null) {
+        throw new EmptyValueException();
+      }
+
+      //segundo tenemos que encontrar el menu
+      let obj = { menu: menu };
+      let menuPosition = this.#getMenuPosition(obj);
+      if (menuPosition !== -1) {
+        //nos aseguramos de que los platos sean platos
+        if (!((dish1 && dish2) instanceof Dish)) {
+          throw new DishException();
+        }
+        if ((dish1 && dish2) === null) {
+          throw new EmptyValueException();
+        }
+
+        //sacamos la posición del plato1 y plato2 y comprobamos si existen
+        let objMenu = this.#menus[menuPosition];
+        let dish1Index = objMenu.dishes.findIndex(
+          (busqueda) => busqueda.name === dish1.name
+        );
+        let dish2Index = objMenu.dishes.findIndex(
+          (busqueda) => busqueda.name === dish2.name
+        );
+        if ((dish1Index || dish2Index) === -1) {
+          throw new DishNotExistsInTheListException();
+        }
+
+        /*//Nos creamos un auxiliar para guardar el primer plato
+        let aux = objMenu.dishes[dish1Index];
+        //en la primeroa posición se guarda el segundo plato
+        objMenu.dishes[dish1Index] = objMenu.dishes[dish2Index];
+        //metemos en el segundo plato el plato auxiliar
+        objMenu.dishes[dish2Index] = aux; */
+
+        //tambien se pueden cambiar sin usar una auxiliar
+        [objMenu.dishes[dish1Index], objMenu.dishes[dish2Index]] = [
+          objMenu.dishes[dish2Index],
+          objMenu.dishes[dish1Index],
+        ];
+      } else {
+        throw new MenuNotExistsInTheListException();
+      }
+    }
+
+    //Obtiene un iterador con la relación de los platos a una categoría. El iterador puede estar ordenado
+    getDishesInCategory() {}
   }
 
   //Inicialización del Singleton

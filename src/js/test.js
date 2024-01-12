@@ -177,6 +177,9 @@ console.log(manager.dishes);
 manager.assignCategoryToDish(normalCategory, pizza, hamburger);
 showCategories();
 console.log(manager.dishes);
+let veganCategory = new Category("Vegan");
+manager.assignCategoryToDish(veganCategory, pizza);
+showCategories();
 
 let fish = new Dish("Fish");
 console.log("añadimos el plato fish");
@@ -190,3 +193,61 @@ console.log("-----eliminacion de platos-----");
 manager.removeDish(hamburger);
 showCategories();
 console.log(manager.dishes);
+
+//comprobamos las funciones asignar alergia al plato y desasignar
+console.log("-----asignación y desasignacion en alergeno-----");
+showAllergens();
+manager.assignAllergenToDish(egg, hamburger);
+manager.assignAllergenToDish(soya, pizza, fish);
+showAllergens();
+//probamos a meter el mismo plato para que nos genere una excepcion
+// manager.assignAllergenToDish(egg, hamburger);
+// manager.assignAllergenToDish(restaurant01, "shoda");
+// manager.assignAllergenToDish(egg, "alsdj");
+//desasignamos un alergeno a un plato
+manager.deassignAllergenToDish(soya, fish);
+showAllergens();
+try {
+  // manager.deassignAllergenToDish(saturdayMenu, fish);
+  manager.deassignAllergenToDish(egg, "hamburger");
+} catch (error) {
+  console.log(error.message);
+}
+
+//vamos con asignar y desasignar menu
+showMenus();
+manager.addMenu(saturdayMenu);
+showMenus();
+manager.removeMenu(dailymenu);
+showMenus();
+manager.assignDishToMenu(saturdayMenu, pizza, hamburger);
+manager.assignDishToMenu(dailymenu, fish);
+showMenus();
+try {
+  manager.assignDishToMenu(dailymenu, fish);
+} catch (error) {
+  console.log(error.message);
+}
+
+manager.deassignDishToMenu(saturdayMenu, pizza);
+showMenus();
+try {
+  manager.deassignDishToMenu(saturdayMenu, pizza);
+} catch (error) {
+  console.log(error.message);
+}
+
+//probamos cambiar de orden los platos en el menu
+showMenus();
+manager.assignDishToMenu(saturdayMenu, pizza);
+showMenus();
+// manager.changeDishesPositionsInMenu(saturdayMenu, hamburger, fish);
+showMenus();
+try {
+  // manager.changeDishesPositionsInMenu(saturdayMenu, hamburger);
+  // manager.changeDishesPositionsInMenu("hola", hamburger, fish);
+  // manager.changeDishesPositionsInMenu("hola", hamburger, fish);
+  // manager.changeDishesPositionsInMenu(saturdayMenu, hamburger, fish);
+} catch (error) {
+  console.log(error.message);
+}
