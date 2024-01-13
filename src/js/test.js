@@ -22,10 +22,14 @@ hamburger.ingredients = [
 hamburger.image = "image";
 
 //provocamos algunos fallos
-// let dish02 = new Dish();
-// pizza.description = "";
-// pizza.ingredients = "sjdlaj";
-// console.log(pizza.ingredients);
+try {
+  // let dish02 = new Dish();
+  // pizza.description = "";
+  // pizza.ingredients = "sjdlaj";
+  // console.log(pizza.ingredients);
+} catch (error) {
+  console.log(error.message);
+}
 
 //Probamos con el objeto Category
 let vegetarian = new Category("Vegetarian");
@@ -37,8 +41,12 @@ normalCategory.description =
   "This is a normal category for people who do not have any type of allergen";
 
 //generamos algunos fallos
-// let normalCategory = new Category();
-// vegetarian.description = 236;
+try {
+  // let normalCategory = new Category();
+  // vegetarian.description = 236;
+} catch (error) {
+  console.log(error.message);
+}
 
 //Probamos con el objeto Allergen
 let egg = new Allergen("Egg");
@@ -49,9 +57,13 @@ let soya = new Allergen("Soya");
 egg.description = "Person who cannor ear soya";
 
 //generamos algunos fallos
-// let soya = new Allergen();
-// egg.description = 236;
-// egg.name = 236;
+try {
+  // let soya = new Allergen();
+  // egg.description = 236;
+  // egg.name = 236;
+} catch (error) {
+  console.log(error.message);
+}
 
 //Probamos con el objeto Menu
 let saturdayMenu = new Menu("Saturday Menu");
@@ -64,8 +76,12 @@ dailymenu.description =
   "Daily Menu with main dish, second dish, dessert and drink for a better price.";
 
 //generamos algunos fallos
-// let dailymenu = new Menu();
-// saturdayMenu.description = [];
+try {
+  // let dailymenu = new Menu();
+  // saturdayMenu.description = [];
+} catch (error) {
+  console.log(error.message);
+}
 
 //Probamos con el objeto Coordinate
 let coordinate01 = new Coordinate("123.45", "-56.456");
@@ -73,8 +89,12 @@ console.log(coordinate01.toString());
 let coordinate02 = new Coordinate("-43.5", "-34.26");
 
 //generamos algunos fallos
-// let coordinate02 = new Coordinate(123.2, -42.36);
-// let coordinate03 = new Coordinate();
+try {
+  // let coordinate02 = new Coordinate(123.2, -42.36);
+  // let coordinate03 = new Coordinate();
+} catch (error) {
+  console.log(error.message);
+}
 
 //Probamos con el objeto restaurant
 let restaurant01 = new Restaurant("Blue");
@@ -87,9 +107,13 @@ restaurant02.description = "The best restaurant in Cambridge.";
 restaurant02.location = coordinate02;
 
 //generamos algunos fallos
-// let restaurant02 = new Restaurant();
-// restaurant01.description = 1236;
-// restaurant01.location = 110.3, 1523.6;
+try {
+  // let restaurant02 = new Restaurant();
+  // restaurant01.description = 1236;
+  // restaurant01.location = 110.3, 1523.6;
+} catch (error) {
+  console.log(error.message);
+}
 
 //Probando RestaurantManager
 console.log("---------------Probando RestaurantManager---------------");
@@ -147,49 +171,49 @@ const filt = function (dishIngredient) {
 
 manager.addCategory(vegetarian);
 manager.addCategory(normalCategory);
-// manager.addCategory(vegetarian); //probamos a añadir de nuevo la misma categoría
-// mostramos las categorias de manager
-showCategories();
-// manager.removeCategory(vegetarian);
-// manager.removeCategory(vegetarian); //probamos a eliminar la misma categoría
-// manager.removeCategory("hola que tal"); //probamos a eliminar algo que no sea una categoria
-// manager.removeCategory(restaurant01);
-// mostramos las categorias de manager.
-showCategories();
-
 manager.addMenu(saturdayMenu, dailymenu);
-// manager.addMenu(menu01); //probamos que no se pueda introducir un mismo menú
-showMenus();
 manager.removeMenu(saturdayMenu);
-// manager.removeMenu(menu01); //probamos a eliminar el mismo menu
-// manager.removeMenu(vegetarian); //probamos a eliminar algo que no sea un menu
-showMenus();
-
 manager.addAllergen(egg, soya);
-// manager.addAllergen(egg); //probamos que no se pueda introducir un mismo menú
-// manager.addAllergen(saturdayMenu); //pronamos que solo se pueda introducir un alergeno
-showAllergens();
 manager.removeAllergen(egg);
-// manager.removeAllergen(egg); //probamos a eliminar el mismo alergeno
-// manager.removeAllergen(saturdayMenu); //probamo a eliminar un tipo que no sea Allergen
+try {
+  // manager.addCategory(vegetarian); //probamos a añadir de nuevo la misma categoría
+  // manager.removeCategory(vegetarian); //probamos a eliminar la misma categoría
+  // manager.removeCategory("hola que tal"); //probamos a eliminar algo que no sea una categoria
+  // manager.removeCategory(restaurant01);
+  // manager.addMenu(menu01); //probamos que no se pueda introducir un mismo menú
+  // manager.removeMenu(menu01); //probamos a eliminar el mismo menu
+  // manager.removeMenu(vegetarian); //probamos a eliminar algo que no sea un menu
+  // manager.addAllergen(egg); //probamos que no se pueda introducir un mismo menú
+  // manager.addAllergen(saturdayMenu); //pronamos que solo se pueda introducir un alergeno
+  // manager.removeAllergen(egg); //probamos a eliminar el mismo alergeno
+  // manager.removeAllergen(saturdayMenu); //probamo a eliminar un tipo que no sea Allergen
+} catch (error) {
+  console.log(error.message);
+}
+showCategories();
+showMenus();
+showAllergens();
 showAllergens();
 
 manager.addDish(pizza);
 console.log(manager.dishes);
-// manager.addDish(saturdayMenu); //probamos a introducir un dato que no sea un plato
-// manager.addDish(pizza); //probamos a introducir un plato ya existente
-// manager.removeDish(pizza);
-// manager.removeDish(pizza);//probamos a eliminar el mismo plato
-// manager.removeDish(saturdayMenu); //probamos a eliminar un tipo que no sea plato
-console.log(manager.dishes);
-
 manager.addRestaurant(restaurant01, restaurant02);
-// manager.addRestaurant(restaurant01); //añadimos de nuevo el mismo restaurante
-// manager.addRestaurant("lkasjd"); //añadimos un tipo que no es Restaurant
-showRestaurants();
 manager.removeRestaurant(restaurant01);
-// manager.removeRestaurant(restaurant01); //eliminamos el mismo restaurante
-// manager.removeRestaurant("laksjd"); //eliminamos un tipo que no es Restaurant
+try {
+  // manager.addDish(saturdayMenu); //probamos a introducir un dato que no sea un plato
+  // manager.addDish(pizza); //probamos a introducir un plato ya existente
+  // manager.removeDish(pizza);
+  // manager.removeDish(pizza);//probamos a eliminar el mismo plato
+  // manager.removeDish(saturdayMenu); //probamos a eliminar un tipo que no sea plato
+  // manager.addRestaurant(restaurant01); //añadimos de nuevo el mismo restaurante
+  // manager.addRestaurant("lkasjd"); //añadimos un tipo que no es Restaurant
+  // manager.removeRestaurant(restaurant01); //eliminamos el mismo restaurante
+  // manager.removeRestaurant("laksjd"); //eliminamos un tipo que no es Restaurant
+} catch (error) {
+  console.log(error.message);
+}
+
+console.log(manager.dishes);
 showRestaurants();
 
 console.log("---añadidos---");
@@ -305,3 +329,22 @@ console.log("---------------------------------------");
 console.log(manager.dishes);
 let i3 = manager.findDishes(filt);
 showDishesIn(i3);
+try {
+  let i4 = manager.findDishes();
+  showDishesIn(i4);
+} catch (error) {
+  console.log(error.message);
+}
+
+//probamos a crearnos los objetos con las funciones create
+console.log("-----CREACIÓN DE OBJETOS A TRAVÉS DEL LAS FUNCIONES CREATE-----");
+manager.removeDish(pizza);
+console.log(manager.dishes);
+let pizza2 = manager.createDish("Pizza");
+console.log(pizza2);
+
+let hallowenMenu = manager.createMenu();
+console.log(hallowenMenu);
+
+let lactose = manager.createAllergen("Lactose");
+console.log(lactose);

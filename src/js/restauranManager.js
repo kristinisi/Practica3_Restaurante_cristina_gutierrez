@@ -56,17 +56,6 @@ class RestaurantException extends RestaurantsManagerException {
   }
 }
 
-// class CoordinateException extends RestaurantsManagerException {
-//   constructor(fileName, lineNumber) {
-//     super(
-//       "Error: The method needs a Coordinate parameter.",
-//       fileName,
-//       lineNumber
-//     );
-//     this.name = "CoordinateException";
-//   }
-// }
-
 class CategoryInTheListException extends RestaurantsManagerException {
   constructor(fileName, lineNumber) {
     super("Error: Category is already in the list.", fileName, lineNumber);
@@ -130,6 +119,7 @@ class DishNotExistsInTheListException extends RestaurantsManagerException {
     this.name = "DishNotExistsInTheListException";
   }
 }
+
 class RestaurantInTheListException extends RestaurantsManagerException {
   constructor(fileName, lineNumber) {
     super("Error: Restaurant is already in the list.", fileName, lineNumber);
@@ -282,7 +272,6 @@ let RestaurantsManager = (function () {
           throw new CategoryInTheListException();
         } else {
           this.#dishesCategory.push(obj);
-          console.log("Successfully added");
         }
       }
     }
@@ -297,7 +286,6 @@ let RestaurantsManager = (function () {
         let position = this.#getCategoryPosition(obj);
         if (position !== -1) {
           this.#dishesCategory.splice(position, 1);
-          console.log("Succesfully removed");
         } else {
           throw new CategoryNotExistsInTheListException();
         }
@@ -318,7 +306,6 @@ let RestaurantsManager = (function () {
           throw new MenuInTheListException();
         } else {
           this.#menus.push(obj);
-          console.log("Successfully added");
         }
       }
     }
@@ -333,7 +320,6 @@ let RestaurantsManager = (function () {
         let position = this.#getMenuPosition(obj);
         if (position !== -1) {
           this.#menus.splice(position, 1);
-          console.log("Succesfully removed");
         } else {
           throw new MenuNotExistsInTheListException();
         }
@@ -354,7 +340,6 @@ let RestaurantsManager = (function () {
           throw new AllergenInTheListException();
         } else {
           this.#allergenType.push(obj);
-          console.log("Successfully added");
         }
       }
     }
@@ -369,7 +354,6 @@ let RestaurantsManager = (function () {
         let position = this.#getAllergenPosition(obj);
         if (position !== -1) {
           this.#allergenType.splice(position, 1);
-          console.log("Succesfully removed");
         } else {
           throw new AllergenNotExistsInTheListException();
         }
@@ -385,12 +369,10 @@ let RestaurantsManager = (function () {
         if (di === null) {
           throw new EmptyValueException();
         }
-
         if (this.#getDishPosition(di) !== -1) {
           throw new DishInTheListException();
         } else {
           this.#dishes.push(di);
-          console.log("Successfully added in the list dishes");
         }
       }
     }
@@ -405,7 +387,6 @@ let RestaurantsManager = (function () {
         let position = this.#getDishPosition(di);
         if (position !== -1) {
           this.#dishes.splice(position, 1);
-          console.log("Succesfully removed in the list of dishes");
 
           //segundo, buscamos si el plato está en alguna de las categorias(ya que puede estar en varias) y si los encuentra los borra
           for (const objCat of this.#dishesCategory) {
@@ -430,7 +411,7 @@ let RestaurantsManager = (function () {
               (busqueda) => busqueda.name === di.name
             );
             if (dishIndex !== -1) {
-              this.#allergenType[AllergenPosition].dishes.splice(dishIndex, 1);
+              this.#allergenType[allergenPosition].dishes.splice(dishIndex, 1);
             }
           }
 
@@ -465,7 +446,6 @@ let RestaurantsManager = (function () {
           throw new RestaurantInTheListException();
         } else {
           this.#restaurants.push(obj);
-          console.log("Successfully added");
         }
       }
     }
@@ -480,7 +460,6 @@ let RestaurantsManager = (function () {
         let position = this.#getRestaurantPosition(obj);
         if (position !== -1) {
           this.#restaurants.splice(position, 1);
-          console.log("Succesfully removed");
         } else {
           throw new RestaurantNotExistsInTheListException();
         }
@@ -865,16 +844,102 @@ let RestaurantsManager = (function () {
       //nos creamos una copia de array de platos
       let dishesArray = this.#dishes.slice();
 
-      if (filter) {
-        dishesArray = dishesArray.filter(fil);
+      if (fil) {
+        dishesArray = dishesArray.filter(fil); //devuelve los platos que tiene concuerda con la función pasada por parámetro
       }
       if (comparison) {
+        //si existe la función, ordenamos le array
         dishesArray.sort(comparison);
       }
       //devolvemos los platos
       for (let dish of dishesArray) {
         yield dish;
       }
+    }
+
+    //devuelve un objeto Dish si está registrado y si no, crea uno nuevo
+    createDish(name = "undefined") {
+      let dish;
+      //hacemos una búsqueda para ver si encontramos el plato o no
+      let dishPosition = this.#dishes.findIndex(
+        (busqueda) => busqueda.name === name
+      );
+      if (dishPosition !== -1) {
+        //hemos encontrado el plato asique lo devolvemos luego
+        dish = this.#dishes[dishPosition];
+      } else {
+        //si no lo encuentra lo crea
+        dish = new Dish(name);
+      }
+      return dish;
+    }
+
+    //devuelve un objeto Menu si está registrado y si no, crea uno nuevo
+    createMenu(name = "undefined") {
+      let menu;
+      //hacemos una búsqueda para ver si encontramos el menu o no
+      let menuPosition = this.#menus.findIndex(
+        (busqueda) => busqueda.name === name
+      );
+      if (menuPosition !== -1) {
+        //hemos encontrado el plato asique lo devolvemos luego
+        menu = this.#menus[menuPosition];
+      } else {
+        //si no lo encuentra lo crea
+        menu = new Menu(name);
+      }
+      return menu;
+    }
+
+    //devuelve un objeto Menu si está registrado y si no, crea uno nuevo
+    createAllergen(name = "undefined") {
+      let allergen;
+      //hacemos una búsqueda para ver si encontramos el alergeno o no
+      let allergenPosition = this.#allergenType.findIndex(
+        (busqueda) => busqueda.name === name
+      );
+      if (allergenPosition !== -1) {
+        //hemos encontrado el plato asique lo devolvemos luego
+        allergen = this.#allergenType[allergenPosition];
+      } else {
+        //si no lo encuentra lo crea
+        allergen = new Allergen(name);
+      }
+      return allergen;
+    }
+
+    //devuelve un objeto Category si está registrado y si no, crea uno nuevo
+    createCategory(name = "undefined") {
+      let category;
+      //hacemos una búsqueda para ver si encontramos el alergeno o no
+      let categoryPosition = this.#dishesCategory.findIndex(
+        (busqueda) => busqueda.name === name
+      );
+      if (categoryPosition !== -1) {
+        //hemos encontrado el plato asique lo devolvemos luego
+        category = this.#dishesCategory[categoryPosition];
+      } else {
+        //si no lo encuentra lo crea
+        category = new Category(name);
+      }
+      return category;
+    }
+
+    //devuelve un objeto Restaurant si está registrado y si no, crea uno nuevo
+    createCategory(name = "undefined") {
+      let restaurant;
+      //hacemos una búsqueda para ver si encontramos el alergeno o no
+      let restaurantPosition = this.#restaurants.findIndex(
+        (busqueda) => busqueda.name === name
+      );
+      if (restaurantPosition !== -1) {
+        //hemos encontrado el plato asique lo devolvemos luego
+        restaurant = this.#restaurants[restaurantPosition];
+      } else {
+        //si no lo encuentra lo crea
+        restaurant = new Restaurant(name);
+      }
+      return restaurant;
     }
   }
 
