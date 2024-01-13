@@ -1,3 +1,36 @@
+"use strict";
+import {
+  BaseException,
+  InvalidAccessConstructorException,
+  EmptyValueException,
+  InvalidValueException,
+  AbstractClassException,
+  Dish,
+  Category,
+  Allergen,
+  Menu,
+  Restaurant,
+  Coordinate,
+  RestaurantsManagerException,
+  DishException,
+  CategoryException,
+  MenuException,
+  AllergenException,
+  RestaurantException,
+  CategoryInTheListException,
+  CategoryNotExistsInTheListException,
+  MenuInTheListException,
+  MenuNotExistsInTheListException,
+  AllergenInTheListException,
+  AllergenNotExistsInTheListException,
+  DishInTheListException,
+  DishNotExistsInTheListException,
+  RestaurantInTheListException,
+  RestaurantNotExistsInTheListException,
+} from "./restauranManager.js";
+
+import RestaurantsManager from "./restauranManager.js";
+
 //Probando la creación de los objetos independientes
 console.log("Probando la creación de objetos independientes:");
 

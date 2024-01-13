@@ -61,10 +61,10 @@ class AbstractClassException extends BaseException {
   }
 }
 
-// export {
-//   BaseException,
-//   InvalidAccessConstructorException,
-//   EmptyValueException,
-//   InvalidValueException,
-//   AbstractClassException,
-// };
+export {
+  BaseException,
+  InvalidAccessConstructorException,
+  EmptyValueException,
+  InvalidValueException,
+  AbstractClassException,
+};

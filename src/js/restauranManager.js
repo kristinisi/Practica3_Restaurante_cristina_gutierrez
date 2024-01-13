@@ -1,3 +1,21 @@
+"use strict";
+import {
+  BaseException,
+  InvalidAccessConstructorException,
+  EmptyValueException,
+  InvalidValueException,
+  AbstractClassException,
+} from "./exceptions.js";
+
+import {
+  Dish,
+  Category,
+  Allergen,
+  Menu,
+  Restaurant,
+  Coordinate,
+} from "./listadoObjetos.js";
+
 //Declaramos las clases específicas como clases
 class RestaurantsManagerException extends BaseException {
   constructor(
@@ -962,3 +980,35 @@ let RestaurantsManager = (function () {
     },
   };
 })();
+
+export {
+  BaseException,
+  InvalidAccessConstructorException,
+  EmptyValueException,
+  InvalidValueException,
+  AbstractClassException,
+  Dish,
+  Category,
+  Allergen,
+  Menu,
+  Restaurant,
+  Coordinate,
+  RestaurantsManagerException,
+  DishException,
+  CategoryException,
+  MenuException,
+  AllergenException,
+  RestaurantException,
+  CategoryInTheListException,
+  CategoryNotExistsInTheListException,
+  MenuInTheListException,
+  MenuNotExistsInTheListException,
+  AllergenInTheListException,
+  AllergenNotExistsInTheListException,
+  DishInTheListException,
+  DishNotExistsInTheListException,
+  RestaurantInTheListException,
+  RestaurantNotExistsInTheListException,
+};
+
+export default RestaurantsManager;

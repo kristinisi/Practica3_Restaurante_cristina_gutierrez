@@ -1,11 +1,11 @@
-//Importamos las excepciones generales
-// import {
-//   BaseException,
-//   InvalidAccessConstructorException,
-//   EmptyValueException,
-//   InvalidValueException,
-//   AbstractClassException,
-// } from "./exceptions";
+// Importamos las excepciones generales
+import {
+  BaseException,
+  InvalidAccessConstructorException,
+  EmptyValueException,
+  InvalidValueException,
+  AbstractClassException,
+} from "./exceptions.js";
 
 // Objeto Dish: para indentificar los datos de un plato
 class Dish {
@@ -360,3 +360,5 @@ class Coordinate {
     return `Latitude: ${this.latitude}, Longitude: ${this.longitude}`;
   }
 }
+
+export { Dish, Category, Allergen, Menu, Restaurant, Coordinate };
