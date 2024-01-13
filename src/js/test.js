@@ -123,6 +123,28 @@ function showRestaurants() {
   }
 }
 
+function showDishesIn(iterator) {
+  console.log("Dishes: ");
+  for (const dish of iterator) {
+    console.log(dish);
+  }
+}
+
+//nos creamos una función de comparación para meterla como un argumento
+const comparison = function (elemA, elemB) {
+  return elemA.name.localeCompare(elemB.name);
+};
+
+//con creamos una función que cumpla un criterio concreto
+const filt = function (dishIngredient) {
+  for (let ing of dishIngredient.ingredients) {
+    if (ing === "tomato") {
+      return true;
+    }
+  }
+  return false;
+};
+
 manager.addCategory(vegetarian);
 manager.addCategory(normalCategory);
 // manager.addCategory(vegetarian); //probamos a añadir de nuevo la misma categoría
@@ -251,3 +273,35 @@ try {
 } catch (error) {
   console.log(error.message);
 }
+
+console.log("probando metodos iterar platos");
+showCategories();
+manager.assignCategoryToDish(normalCategory, fish, hamburger);
+let iteratorCategory = manager.getDishesInCategroy(normalCategory);
+showDishesIn(iteratorCategory);
+let iteratorC2 = manager.getDishesInCategroy(normalCategory, comparison);
+showDishesIn(iteratorC2);
+
+try {
+  let iteratorC3 = manager.getDishesInCategroy(comparison);
+  showDishesIn(iteratorC3);
+} catch (error) {
+  console.log(error.message);
+}
+
+showAllergens();
+manager.assignAllergenToDish(soya, hamburger, fish);
+showAllergens();
+let i1 = manager.getDishesWithAllergen(soya, comparison);
+showDishesIn(i1);
+try {
+  let i2 = manager.getDishesWithAllergen();
+  showDishesIn(i2);
+} catch (error) {
+  console.log(error.message);
+}
+
+console.log("---------------------------------------");
+console.log(manager.dishes);
+let i3 = manager.findDishes(filt);
+showDishesIn(i3);

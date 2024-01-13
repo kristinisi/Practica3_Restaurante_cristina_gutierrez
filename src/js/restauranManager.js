@@ -792,7 +792,90 @@ let RestaurantsManager = (function () {
     }
 
     //Obtiene un iterador con la relación de los platos a una categoría. El iterador puede estar ordenado
-    getDishesInCategory() {}
+    //como el iterador puede estar ordenado o no, le ponemos en un principio null
+    *getDishesInCategroy(cat, comparison = null) {
+      //primero nos aseguramos que introducimos un tipo de categoria
+      if (!(cat instanceof Category)) {
+        throw new CategoryException();
+      }
+      if (cat === null) {
+        throw new EmptyValueException();
+      }
+
+      //segundo tenemos que encontrar la categoria
+      let obj = { category: cat };
+      let categoryPosition = this.#getCategoryPosition(obj);
+      if (categoryPosition !== -1) {
+        //sacamos el objeto de la categoria con el que queremos trabajar
+        let objCategory = this.#dishesCategory[categoryPosition];
+        //nos creamos un array para ir guardando los platos
+        let dishesArray = [];
+        for (let di of objCategory.dishes) {
+          dishesArray.push(di);
+        }
+        //ahora que ya tenemos todos los platos en un array, ordenamos el array en caso de que nos haya llegado la funcion
+        if (comparison) {
+          dishesArray.sort(comparison);
+        }
+        //devolvemos los platos
+        for (let dish of dishesArray) {
+          yield dish;
+        }
+      } else {
+        throw new CategoryNotExistsInTheListException();
+      }
+    }
+
+    //Obtiene un iterador con los platos que tiene un determinado alergeno. El iterador puede estar ordenado
+    *getDishesWithAllergen(aller, comparison = null) {
+      //primero nos aseguramos que introducimos un tipo de categoria
+      if (!(aller instanceof Allergen)) {
+        throw new AllergenException();
+      }
+      if (aller === null) {
+        throw new EmptyValueException();
+      }
+
+      //segundo tenemos que encontrar el alergeno
+      let obj = { allerge: aller };
+      let allergenPosition = this.#getAllergenPosition(obj);
+      if (allergenPosition !== -1) {
+        //sacamos el objeto del alergeno con el que queremos trabajar
+        let objAllergen = this.#allergenType[allergenPosition];
+        //nos creamos un array para ir guardando los platos
+        let dishesArray = [];
+        for (let di of objAllergen.dishes) {
+          dishesArray.push(di);
+        }
+        //ahora que ya tenemos todos los platos en un array, ordenamos el array en caso de que nos haya llegado la funcion
+        if (comparison) {
+          dishesArray.sort(comparison);
+        }
+        //devolvemos los platos
+        for (let dish of dishesArray) {
+          yield dish;
+        }
+      } else {
+        throw new AllergenNotExistsInTheListException();
+      }
+    }
+
+    //Obtiene un iterador que cumpla un criterio concreto en base a una función de callback. El iterador puede estar ordenado.
+    *findDishes(fil = null, comparison = null) {
+      //nos creamos una copia de array de platos
+      let dishesArray = this.#dishes.slice();
+
+      if (filter) {
+        dishesArray = dishesArray.filter(fil);
+      }
+      if (comparison) {
+        dishesArray.sort(comparison);
+      }
+      //devolvemos los platos
+      for (let dish of dishesArray) {
+        yield dish;
+      }
+    }
   }
 
   //Inicialización del Singleton
